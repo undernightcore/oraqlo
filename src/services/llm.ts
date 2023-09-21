@@ -17,8 +17,12 @@ class Ai {
         });
     }
 
-    public ask(question: string) {
-        return this.chain.call({ question });
+    public ask(question: string, handleToken?: (token: string) => (void | Promise<void>)) {
+        return this.chain.call({ question }, {callbacks: [{
+            async handleLLMNewToken(token) {
+                await handleToken?.(token)
+            }
+        }]});
     }
 }
 
