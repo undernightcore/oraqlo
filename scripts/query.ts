@@ -11,6 +11,7 @@ async function main() {
     if (!question) throw new Error('Question must not be empty!')
 
     const tokens: string[] = []
+
     await ai.ask(question, (token) => {
         tokens.push(token)
         console.clear()

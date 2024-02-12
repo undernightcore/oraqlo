@@ -1,4 +1,4 @@
-import {Ollama} from "langchain/llms/ollama";
+import {Ollama} from "@langchain/community/llms/ollama";
 import {loadQAStuffChain, RetrievalQAChain} from "langchain/chains";
 import {HNSWLib} from "langchain/vectorstores/hnswlib";
 
@@ -8,7 +8,10 @@ class Ai {
     chain: RetrievalQAChain;
 
     constructor(database: HNSWLib) {
-        this.llm = new Ollama({ baseUrl: process.env.OLLAMA_URL, model: 'llama2' })
+        this.llm = new Ollama({
+            baseUrl: process.env.OLLAMA_URL ?? 'http://localhost:11434',
+            model: process.env.MODEL ?? 'llama2'
+        })
         this.database = database
         this.chain = new RetrievalQAChain({
             combineDocumentsChain: loadQAStuffChain(this.llm),
@@ -18,10 +21,8 @@ class Ai {
     }
 
     public ask(question: string, handleToken?: (token: string) => (void | Promise<void>)) {
-        return this.chain.call({ question }, {callbacks: [{
-            async handleLLMNewToken(token) {
-                await handleToken?.(token)
-            }
+        return this.chain.invoke({ question }, {callbacks: [{
+            handleLLMNewToken: handleToken
         }]});
     }
 }

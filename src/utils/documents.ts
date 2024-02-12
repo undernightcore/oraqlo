@@ -1,12 +1,15 @@
 import {RecursiveCharacterTextSplitter} from "langchain/text_splitter";
 import {Document} from "langchain/document";
-import {UnstructuredDirectoryLoader} from "langchain/document_loaders/fs/unstructured";
 import {DOCS_PATH} from "../constants";
+import {DirectoryLoader} from "langchain/document_loaders/fs/directory";
+import {PDFLoader} from "langchain/document_loaders/fs/pdf";
 
 export async function loadAllDocuments() {
-    const loader = new UnstructuredDirectoryLoader(
+    const loader = new DirectoryLoader(
         DOCS_PATH,
-        {apiUrl: 'http://127.0.0.1:8000/general/v0/general'}
+        {
+            ".pdf": (path) => new PDFLoader(path)
+        }
     );
     return loader.load()
 }

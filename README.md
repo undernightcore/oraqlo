@@ -28,12 +28,7 @@ npm run feed
 
 ### Ask the AI some questions
 
-Right now you have to modify scripts/query.ts file to change the question (still building the API).
-
-```javascript
-const answer = await ai.ask('How many people work at Mercadona?')
-```
-
+You can ask some questions using the query.ts script.
 ```shell
-npm run query
+npm run query "How many people work at Mercadona?"
 ```

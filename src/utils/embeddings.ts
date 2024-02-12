@@ -1,6 +1,8 @@
-import "@tensorflow/tfjs-node"
-import {TensorFlowEmbeddings} from "langchain/embeddings/tensorflow";
+import { HuggingFaceTransformersEmbeddings } from "@langchain/community/embeddings/hf_transformers";
 
-export function getEmbeddings() {
-    return new TensorFlowEmbeddings()
+
+export async function getEmbeddings() {
+    return new HuggingFaceTransformersEmbeddings({
+        modelName: "Xenova/all-mpnet-base-v2",
+    });
 }
